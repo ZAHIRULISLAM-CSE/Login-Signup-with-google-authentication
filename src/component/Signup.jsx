@@ -1,80 +1,20 @@
-import React, { useState } from "react";
-import {createUserWithEmailAndPassword, getAuth, sendEmailVerification, updateProfile} from 'firebase/auth'
-import app from "../config/config";
-const Register = () => {
-    const [successMessage,setSuccessMessage]=useState('');
-    const [error,setErrorMessage]=useState('');
-    const auth=getAuth(app);
+import React from "react";
+
+const Signup = () => {
 
     const handleFormDetails=(event)=>{
-        setSuccessMessage('');
-        setErrorMessage('');
+        // setSuccessMessage('');
+        // setErrorMessage('');
         event.preventDefault();
-        console.log(event.target.name.value);
-        const name=event.target.name.value;
         const password=event.target.password.value;
         const email=event.target.email.value;
+        console.log(password);
+        console.log(email);
 
-        //validate the process
-        if(password.length<6){
-            setErrorMessage('Password Length must be above 6 digits');
-            return;
-        }
-        else if(!/(?=.*[A-Z])/.test(password)){
-            setErrorMessage('Password contain atleast one uppercase');
-            return;
-        }
-        //console.log(name,password,email);
-        createUserWithEmailAndPassword(auth,email,password)
-        .then(result=>{
-            const loggedUser=result.user;
-            verifyEmail(loggedUser);
-            updateName(loggedUser,name);
-            console.log(loggedUser);
-            setSuccessMessage('Registration Successfull')
-        })
-        .catch(error =>{
-            console.log(error.message);
-        })  
     }
-
-  const updateName=(user,name)=>{
-    updateProfile(user,{
-        displayName:name
-    })
-  }
-
-  const verifyEmail=(user)=>{
-    sendEmailVerification(user)
-  .then((result) => {
-        console.log(result);
-        alert('verify your email')
-  });
-  }
-
-
-
-
-
-
   return (
-    <div className="mt-8">
+    <div>
       <form onSubmit={handleFormDetails} className="w-1/2 mx-auto">
-        <div className="mb-6">
-          <label
-            htmlFor="password"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          >
-            Your Name
-          </label>
-          <input
-            type="text"
-            id="text"
-            name="name"
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            required
-          />
-        </div>
         <div className="mb-6">
           <label
             htmlFor="email"
@@ -128,11 +68,11 @@ const Register = () => {
         >
           Submit
         </button>
-        <p className="text-2xl mt-4 text-green-600">{successMessage}</p>
-        <p className="text-2xl mt-4 text-red-600">{error}</p>
+        {/* <p className="text-2xl mt-4 text-green-600">{successMessage}</p>
+        <p className="text-2xl mt-4 text-red-600">{error}</p> */}
       </form>
     </div>
   );
 };
 
-export default Register;
+export default Signup;
